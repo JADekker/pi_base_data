@@ -2,7 +2,7 @@ using YAML
 using Latexify
 
 input_folder = "pi_base_data/properties"
-output_file = "properties_cleaned.txt"
+output_file = "pi_base_data/properties_cleaned.txt"
 
 function extract_uid_name(file_content)
     try
@@ -65,8 +65,8 @@ end
 # Call the function to process files
 process_files(input_folder, output_file)
 
-open("properties_cleaned.txt", "r") do input_file
-    open("properties_in_lean.txt", "w") do output_file
+open("pi_base_data/properties_cleaned.txt", "r") do input_file
+    open("pi_base_data/properties_in_lean.txt", "w") do output_file
         println(output_file, "import Mathlib\n\nopen TopologicalSpace\n")
         for line in eachline(input_file)
             uid, name, cleaned_name  = map(strip, split(line, ':'))

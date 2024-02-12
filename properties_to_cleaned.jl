@@ -1,8 +1,15 @@
 using YAML
 using Latexify
+using Unicode
 
-input_folder = "pi_base_data/properties"
-output_file = "pi_base_data/properties_cleaned.txt"
+function remove_accents(input_string::AbstractString)
+    normalized_string = Unicode.normalize(strip(input_string), stripmark=true)
+    stripped_string = replace(normalized_string, r"[\p{M}]" => "")
+    return stripped_string
+end
+
+input_folder = "properties"
+output_file = "properties_cleaned.txt"
 
 function extract_uid_name(file_content)
     try
@@ -41,6 +48,7 @@ function extract_uid_name(file_content)
         cleaned_name = replace(cleaned_name, "space" => "Space")
         cleaned_name = endswith(cleaned_name, "Space")  ? cleaned_name : cleaned_name * "Space"
         
+        cleaned_name = remove_accents(cleaned_name)
         return uid, name, cleaned_name
     catch
         return nothing, nothing, nothing
@@ -65,14 +73,14 @@ end
 # Call the function to process files
 process_files(input_folder, output_file)
 
-open("pi_base_data/properties_cleaned.txt", "r") do input_file
-    open("pi_base_data/properties_in_lean.txt", "w") do output_file
+open("properties_cleaned.lean", "r") do input_file
+    open("properties_in_lean.lean", "w") do output_file
         println(output_file, "import Mathlib\n\nopen TopologicalSpace\n")
         for line in eachline(input_file)
             uid, name, cleaned_name  = map(strip, split(line, ':'))
-            
+
             # Format the output
-            formatted_output = "-- $uid : $name\n#check $cleaned_name\n"
+            formatted_output = "-- $uid : $name\n#check $(remove_accents(cleaned_name))\n"
 
             # Print or save the formatted output as needed
             println(output_file,formatted_output)

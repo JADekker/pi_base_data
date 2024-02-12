@@ -9,7 +9,7 @@ function remove_accents(input_string::AbstractString)
 end
 
 input_folder = "properties"
-output_file = "properties_cleaned.txt"
+output_file = "properties_cleaned.lean"
 
 function extract_uid_name(file_content)
     try

@@ -1,21 +1,25 @@
-# Read properties_cleaned.txt to create a dictionary mapping property IDs to their names
+# Read properties_cleaned.lean to create a dictionary mapping property IDs to their names
 properties_dict = Dict{String, String}()
-open("properties_cleaned.txt") do file
+open("properties_cleaned.lean") do file
     for line in eachline(file)
         parts = split(line, ": ")
         properties_dict[parts[1]] = parts[end]
     end
 end
 
-# Read theorems_cleaned.txt and update it
+# Make a folder for the outputs 
+mkdir("lean_checklist_synth")
+mkdir("lean_checklist_other")
+
+# Read theorems_cleaned.lean and update it
 N = 100 # Maximum number of theorems in 1 file
-open("theorems_cleaned.txt", "r") do input_file
+open("theorems_cleaned.lean", "r") do input_file
     lines = readlines(input_file)
     n_files = 0
     i = 0
     while true
-        open("synth_" * string(n_files) * ".lean", "w") do output_synth
-            open("aesop_" * string(n_files) * ".lean", "w") do output_aesop
+        open("lean_checklist_synth/synth_" * string(n_files) * ".lean", "w") do output_synth
+            open("lean_checklist_other/aesop_" * string(n_files) * ".lean", "w") do output_aesop
             println(output_synth,"import Mathlib")
             println(output_aesop,"import Mathlib")
             println(output_aesop,"variable {X : Type*}")

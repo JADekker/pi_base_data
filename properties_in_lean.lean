@@ -511,4 +511,3 @@ open TopologicalSpace
 
 -- P000180 : Hereditarily separable
 #check HereditarilySeparableSpace
-

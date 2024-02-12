@@ -8,8 +8,8 @@ open("properties_cleaned.lean") do file
 end
 
 # Make a folder for the outputs 
-mkdir("lean_checklist_synth")
-mkdir("lean_checklist_other")
+try mkdir("lean_checklist_synth") catch end
+try mkdir("lean_checklist_other") catch end
 
 # Read theorems_cleaned.lean and update it
 N = 100 # Maximum number of theorems in 1 file
